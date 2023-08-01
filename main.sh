@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# Step 1: 停止 MySQL 服务
-sudo service mysql stop
-
+# 检查 MySQL 服务状态
+mysql_status=$(sudo service mysql status)
+if [[ $mysql_status == *"active (running)"* ]]; then
+    # Step 1: 停止 MySQL 服务
+    sudo service mysql stop
+else
+    echo "MySQL 服务已经停止，跳过停止服务的步骤。"
+fi
 # Step 2: 启动 MySQL 服务器并跳过权限验证
 sudo mysqld_safe --skip-grant-tables &
 
